@@ -8,6 +8,11 @@ export interface SimilarCase {
   outcome: string;
 }
 
+export interface CriticalQuestion {
+  question: string;
+  why: string; // clinical reasoning behind the question
+}
+
 export interface DiagnosisResult {
   diagnosis: string;
   icdCode: string;
@@ -16,6 +21,7 @@ export interface DiagnosisResult {
   severity: Severity;
   similarCasesPercent: number;
   similarCases: SimilarCase[];
+  criticalQuestions: CriticalQuestion[];
 }
 
 export interface AnalysisResponse {
@@ -43,6 +49,11 @@ export async function analyzeSymptoms(symptoms: string): Promise<AnalysisRespons
           { age: 34, sex: "Female", sharedSymptoms: ["headache", "nasal congestion", "mild fever"], finalDiagnosis: "Acute URI", outcome: "Resolved in 6 days" },
           { age: 28, sex: "Male", sharedSymptoms: ["sore throat", "cough", "fatigue"], finalDiagnosis: "Acute URI", outcome: "Resolved in 8 days" },
         ],
+        criticalQuestions: [
+          { question: "Have you been in contact with anyone who tested positive for COVID-19 or flu?", why: "Exposure history helps distinguish viral pathogens and guides testing decisions." },
+          { question: "Do you have any difficulty breathing or chest tightness?", why: "Rules out lower respiratory involvement which would escalate severity." },
+          { question: "How long have you had these symptoms?", why: "Duration beyond 10 days suggests bacterial superinfection requiring antibiotics." },
+        ],
       },
       {
         diagnosis: "Acute Sinusitis",
@@ -56,6 +67,10 @@ export async function analyzeSymptoms(symptoms: string): Promise<AnalysisRespons
           { age: 45, sex: "Male", sharedSymptoms: ["facial pressure", "nasal congestion", "headache"], finalDiagnosis: "Acute Sinusitis", outcome: "Resolved with antibiotics in 10 days" },
           { age: 52, sex: "Female", sharedSymptoms: ["headache", "purulent discharge"], finalDiagnosis: "Chronic Sinusitis", outcome: "Referred to ENT specialist" },
         ],
+        criticalQuestions: [
+          { question: "Do you feel pain or pressure around your eyes, cheeks, or forehead?", why: "Localizing sinus pain helps confirm which sinuses are affected and guides imaging." },
+          { question: "Is your nasal discharge green or yellow?", why: "Purulent discharge lasting >10 days distinguishes bacterial sinusitis from viral." },
+        ],
       },
       {
         diagnosis: "Influenza",
@@ -67,6 +82,11 @@ export async function analyzeSymptoms(symptoms: string): Promise<AnalysisRespons
         similarCasesPercent: 22,
         similarCases: [
           { age: 61, sex: "Male", sharedSymptoms: ["high fever", "body aches", "fatigue"], finalDiagnosis: "Influenza A", outcome: "Hospitalized, recovered in 12 days" },
+        ],
+        criticalQuestions: [
+          { question: "Did the symptoms come on suddenly within a few hours?", why: "Sudden onset strongly differentiates influenza from common cold which develops gradually." },
+          { question: "Do you have muscle or body aches?", why: "Severe myalgia is a hallmark of influenza and helps distinguish it from other URIs." },
+          { question: "Are you over 65, pregnant, or have any chronic conditions?", why: "High-risk groups need antiviral treatment within 48 hours to prevent complications." },
         ],
       },
     ],
