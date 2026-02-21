@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   analyzeSymptoms,
-  COMMON_SYMPTOMS,
   type AnalysisResponse,
   type Severity,
 } from "@/services/symptomAnalyzer";
@@ -42,13 +41,6 @@ const Index = () => {
     setResponse(null);
   };
 
-  const handleChipClick = (symptom: string) => {
-    const lower = symptoms.toLowerCase();
-    if (lower.includes(symptom.toLowerCase())) return;
-    const sep = symptoms.trim() ? ", " : "";
-    const next = (symptoms.trim() + sep + symptom).slice(0, MAX_CHARS);
-    setSymptoms(next);
-  };
 
   const handlePrint = () => {
     window.print();
@@ -73,28 +65,6 @@ const Index = () => {
         {/* Input Section */}
         <Card className="mb-6 shadow-md print:hidden">
           <CardContent className="p-5 sm:p-6">
-            {/* Symptom Chips */}
-            <div className="mb-4 flex flex-wrap gap-2">
-              {COMMON_SYMPTOMS.map((s) => {
-                const active = symptoms.toLowerCase().includes(s.toLowerCase());
-                return (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => handleChipClick(s)}
-                    disabled={loading}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                      active
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                    } disabled:opacity-50`}
-                  >
-                    {s}
-                  </button>
-                );
-              })}
-            </div>
-
             <Textarea
               value={symptoms}
               onChange={(e) => setSymptoms(e.target.value.slice(0, MAX_CHARS))}
