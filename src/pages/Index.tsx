@@ -170,7 +170,7 @@ const Index = () => {
                     </Collapsible>
 
                     {/* Critical Questions */}
-                    {result.criticalQuestions.length > 0 && (
+                    {(result.criticalQuestions?.length ?? 0) > 0 && (
                       <Collapsible className="mt-3">
                         <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground group">
                           <HelpCircle className="h-4 w-4" />
