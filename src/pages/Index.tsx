@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Stethoscope, Loader2, RotateCcw, Printer, ChevronDown, Users } from "lucide-react";
+import { Stethoscope, Loader2, RotateCcw, Printer, ChevronDown, Users, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -168,6 +168,30 @@ const Index = () => {
                         ))}
                       </CollapsibleContent>
                     </Collapsible>
+
+                    {/* Critical Questions */}
+                    {result.criticalQuestions.length > 0 && (
+                      <Collapsible className="mt-3">
+                        <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground group">
+                          <HelpCircle className="h-4 w-4" />
+                          <span>{result.criticalQuestions.length} critical follow-up questions</span>
+                          <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-2 space-y-2">
+                          {result.criticalQuestions.map((q, k) => (
+                            <div
+                              key={k}
+                              className="rounded-md border border-border bg-muted/30 p-3"
+                            >
+                              <p className="text-sm font-medium text-foreground">{q.question}</p>
+                              <p className="mt-1 text-xs text-muted-foreground italic">
+                                Why this matters: {q.why}
+                              </p>
+                            </div>
+                          ))}
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )}
                   </CardContent>
                 </Card>
               );
