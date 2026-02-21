@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
-import { Stethoscope, Loader2, RotateCcw, Printer } from "lucide-react";
+import { Stethoscope, Loader2, RotateCcw, Printer, ChevronDown, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   analyzeSymptoms,
   type AnalysisResponse,
@@ -139,6 +140,34 @@ const Index = () => {
                     <p className="text-sm leading-relaxed text-foreground/80">
                       {result.description}
                     </p>
+
+                    {/* Similar Cases - collapsible */}
+                    <Collapsible className="mt-4">
+                      <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground group">
+                        <Users className="h-4 w-4" />
+                        <span>{result.similarCasesPercent}% of similar cases led to this diagnosis</span>
+                        <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-2 space-y-2">
+                        {result.similarCases.map((c, j) => (
+                          <div
+                            key={j}
+                            className="rounded-md border border-border bg-muted/30 p-3 text-sm"
+                          >
+                            <div className="mb-1 flex items-center gap-2">
+                              <span className="font-medium text-foreground">
+                                {c.sex}, {c.age}
+                              </span>
+                              <span className="text-muted-foreground">→</span>
+                              <span className="font-medium text-foreground">{c.finalDiagnosis}</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Shared: {c.sharedSymptoms.join(", ")} · {c.outcome}
+                            </p>
+                          </div>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
                   </CardContent>
                 </Card>
               );
